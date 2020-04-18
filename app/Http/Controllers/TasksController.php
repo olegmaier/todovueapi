@@ -41,7 +41,7 @@ class TasksController extends Controller
     public function store(Request $request)
     {
         //
-        $task=$request->isMethod('put') ? Task::findOrFail($request->id):new Task;
+        $task=$request->isMethod('PUT') ? Task::findOrFail($request->id):new Task;
         $task->id=$request->input('id');
         $task->title=$request->input('title');
         $task->description=$request->input('description');
