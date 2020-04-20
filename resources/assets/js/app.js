@@ -9,6 +9,9 @@ require('./bootstrap');
 
 import '@mdi/font/css/materialdesignicons.css'
 import Vue from 'vue'
+import VueRouter from 'vue-router'
+
+Vue.use(VueRouter)
 import vuetify from './plugins/vuetify' // path to vuetify export
 
 Vue.component('appvue', require('./App.vue'));
