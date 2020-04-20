@@ -10,11 +10,12 @@
     "watch-poll": "npm run watch -- --watch-poll"
   },
   "dependencies": {
-    "@mdi/font": "^3.6.95",
+    "material-design-icons-iconfont": "^5.0.1",
     "roboto-fontface": "*",
     "vuetify": "^2.2.22"
   },
   "devDependencies": {
+    "@mdi/font": "^3.9.97",
     "axios": "^0.17",
     "bootstrap-sass": "^3.3.7",
     "cross-env": "^5.1",
