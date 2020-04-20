@@ -17,6 +17,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::middleware('auth:api')->post('/logout', 'AuthController@logout');
+
+Route::post('/login', 'AuthController@login');
+Route::post('/register', 'AuthController@register');
+
 Route::get('/tasks', 'TasksController@index');
 Route::get('/tasks/{id}', 'TasksController@show');
 Route::post('/tasks', 'TasksController@store');
