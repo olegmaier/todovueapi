@@ -1,5 +1,3 @@
-
-
 <template>
   <v-app>
 
@@ -10,10 +8,10 @@
     >
       <v-toolbar-title>ToDo List</v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn>
+      <v-btn :to="{name:'tasks'}">
         Tasks
       </v-btn>
-      <v-btn>
+      <v-btn :to="{name:'users'}">
         Users
       </v-btn>
       <v-btn>
@@ -34,7 +32,7 @@
           justify="center"
         >
           <v-col class="text-center">
-           
+           <router-view></router-view>
           </v-col>
         </v-row>
       </v-container>

@@ -9,14 +9,26 @@ require('./bootstrap');
 
 import '@mdi/font/css/materialdesignicons.css'
 import Vue from 'vue'
+
+import vuetify from './plugins/vuetify' // path to vuetify export
 import VueRouter from 'vue-router'
 
-Vue.use(VueRouter)
-import vuetify from './plugins/vuetify' // path to vuetify export
-
 Vue.component('appvue', require('./App.vue'));
+Vue.use(VueRouter)
 
+
+
+const routes=[
+    {path: '/', component: require('./App.vue'), name:'Home'},
+    {path: '/tasks', component: require('./components/tasks.vue'), name:'tasks'},
+    {path: '/users', component: require('./components/users.vue'), name:'users'},
+]
+const router=new VueRouter({
+    mode: 'history', 
+    routes: routes
+})
 
 new Vue({
   vuetify,
+  router
 }).$mount('#app')

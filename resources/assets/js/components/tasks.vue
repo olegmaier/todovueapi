@@ -28,7 +28,8 @@
 
 
 <script>
-    export default{
+    export default {
+        name: 'tasks',
         data(){
             return{
                 tasks:[],
