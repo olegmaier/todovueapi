@@ -22,6 +22,8 @@
         <navbar></navbar>
             <div class="container">
                 <tasks></tasks>
+                <appvue></appvue>
+
             </div>
         </div>
         <script src="{{asset('js/app.js')}}"></script>

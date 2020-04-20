@@ -7,17 +7,12 @@
 
 require('./bootstrap');
 
-window.Vue = require('vue');
+import Vue from 'vue'
+import vuetify from './plugins/vuetify' // path to vuetify export
 
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
+Vue.component('appvue', require('./App.vue'));
 
-Vue.component('tasks', require('./components/tasks.vue'));
-Vue.component('navbar', require('./components/navbar.vue'));
 
-const app = new Vue({
-    el: '#app'
-});
+new Vue({
+  vuetify,
+}).$mount('#app')
