@@ -44,11 +44,18 @@ class AuthController extends Controller
             'password' => 'required|string|min:6|',
         ]);
 
-        return User::create([
+        if(User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
-        ]);
+        ]))
+        {
+            return response()->json("Registered succesfully", 200);
+        }
+        else
+        {
+            return response()->json("Error", 401);
+        }
     }
 
     public function logout()
