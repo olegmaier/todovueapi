@@ -13,7 +13,7 @@
 
         <v-btn
         color="success"
-        class="mr-4"
+        class="mr-4 mt-4"
         @click="addOrUpdateTask">
       Save
       </v-btn>
@@ -93,8 +93,6 @@
         },
         methods:{
             fetchTasks(page_url){
-                let vm=this;
-                page_url=page_url||'/api/tasks';
                 fetch('/api/tasks?page=' + this.pagination.current)
                     .then(res=>res.json())
                     .then(res=>{

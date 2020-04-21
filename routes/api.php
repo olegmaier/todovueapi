@@ -27,3 +27,9 @@ Route::get('/tasks/{id}', 'TasksController@show');
 Route::post('/tasks', 'TasksController@store');
 Route::put('/tasks/{id}', 'TasksController@store');
 Route::delete('/tasks/{id}', 'TasksController@destroy');
+
+Route::get('/users', 'UsersController@index');
+Route::get('/users/{id}', 'UsersController@show');
+Route::post('/users', 'UsersController@store');
+Route::put('/users/{id}', 'UsersController@store');
+Route::delete('/users/{id}', 'UsersController@destroy');

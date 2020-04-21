@@ -87292,7 +87292,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuet
   theme: {
     themes: {
       light: {
-        primary: 'blue',
+        primary: '#424222',
         secondary: '#424242',
         accent: '#82B1FF',
         error: '#FF5252',
@@ -90815,8 +90815,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         fetchTasks: function fetchTasks(page_url) {
             var _this = this;
 
-            var vm = this;
-            page_url = page_url || '/api/tasks';
             fetch('/api/tasks?page=' + this.pagination.current).then(function (res) {
                 return res.json();
             }).then(function (res) {
@@ -90948,7 +90946,7 @@ var render = function() {
           _c(
             "v-btn",
             {
-              staticClass: "mr-4",
+              staticClass: "mr-4 mt-4",
               attrs: { color: "success" },
               on: { click: _vm.addOrUpdateTask }
             },
@@ -91070,10 +91068,6 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(89)
-}
 var normalizeComponent = __webpack_require__(9)
 /* script */
 var __vue_script__ = __webpack_require__(91)
@@ -91082,7 +91076,7 @@ var __vue_template__ = __webpack_require__(92)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
-var __vue_styles__ = injectStyle
+var __vue_styles__ = null
 /* scopeId */
 var __vue_scopeId__ = null
 /* moduleIdentifier (server only) */
@@ -91117,46 +91111,8 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 89 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(90);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(77)("246fc589", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-358a9afe\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./users.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-358a9afe\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./users.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 90 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(50)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
-
-// exports
-
-
-/***/ }),
+/* 89 */,
+/* 90 */,
 /* 91 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -91166,8 +91122,151 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
-/* harmony default export */ __webpack_exports__["default"] = ({});
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: 'users',
+    data: function data() {
+        return {
+            users: [],
+            userform: {
+                name: '',
+                email: '',
+                password: ''
+            },
+            user: {
+                name: '',
+                email: '',
+                password: ''
+            },
+            edit: false,
+            pagination: {
+                current: 1,
+                total: 0
+            }
+        };
+    },
+    created: function created() {
+        this.fetchUsers();
+    },
+
+    methods: {
+        fetchUsers: function fetchUsers(page_url) {
+            var _this = this;
+
+            fetch('/api/users?page=' + this.pagination.current).then(function (res) {
+                return res.json();
+            }).then(function (res) {
+                _this.users = res.data;
+                _this.pagination.current = res.meta.current_page;
+                _this.pagination.total = res.meta.last_page;
+            }).catch(function (err) {
+                return console.log(err);
+            });
+        },
+        deleteUser: function deleteUser(id) {
+            var _this2 = this;
+
+            if (confirm('Are you sure?')) {
+                fetch('/api/users/' + id, {
+                    method: 'DELETE'
+                }).then(function (res) {
+                    _this2.fetchUsers();
+                }).catch(function (err) {
+                    console.log(err);
+                });
+            }
+        },
+        editUser: function editUser(user) {
+            this.userform.name = user.name;
+            this.userform.email = user.email;
+            this.userform.id = user.id;
+            this.edit = true;
+        },
+        addOrUpdateUser: function addOrUpdateUser() {
+            var _this3 = this;
+
+            if (this.edit === false) {
+                //create
+                fetch('/api/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(this.userform)
+                }).then(function (res) {
+                    _this3.fetchUsers();
+                    _this3.userform.name = '';
+                    _this3.userform.email = '';
+                    _this3.userform.password = '';
+                }).catch(function (err) {
+                    console.log(err);
+                });
+            } else {
+                //update
+                fetch('/api/users/' + this.userform.id, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(this.userform)
+                }).then(function (res) {
+                    _this3.fetchUsers();
+                    _this3.userform.name = '';
+                    _this3.userform.email = '';
+                    _this3.userform.password = '';
+                    _this3.edit = false;
+                }).catch(function (err) {
+                    console.log(err);
+                });
+            }
+        }
+    }
+});
 
 /***/ }),
 /* 92 */
@@ -91177,7 +91276,144 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [_vm._v("users")])
+  return _c(
+    "div",
+    [
+      _c("h2", [_vm._v("Users")]),
+      _vm._v(" "),
+      _c(
+        "v-form",
+        [
+          _c("v-text-field", {
+            attrs: { label: "User", "hide-details": "auto" },
+            model: {
+              value: _vm.userform.name,
+              callback: function($$v) {
+                _vm.$set(_vm.userform, "name", $$v)
+              },
+              expression: "userform.name"
+            }
+          }),
+          _vm._v(" "),
+          _c("v-text-field", {
+            attrs: { label: "Email", "hide-details": "auto" },
+            model: {
+              value: _vm.userform.email,
+              callback: function($$v) {
+                _vm.$set(_vm.userform, "email", $$v)
+              },
+              expression: "userform.email"
+            }
+          }),
+          _vm._v(" "),
+          _c("v-text-field", {
+            attrs: {
+              type: "password",
+              label: "Password",
+              "hide-details": "auto"
+            },
+            model: {
+              value: _vm.userform.password,
+              callback: function($$v) {
+                _vm.$set(_vm.userform, "password", $$v)
+              },
+              expression: "userform.password"
+            }
+          }),
+          _vm._v(" "),
+          _c(
+            "v-btn",
+            {
+              staticClass: "mr-4 mt-4",
+              attrs: { color: "success" },
+              on: { click: _vm.addOrUpdateUser }
+            },
+            [_vm._v("\r\n      Save\r\n      ")]
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("v-divider", { staticClass: "mb-4 mt-4" }),
+      _vm._v(" "),
+      _c("v-pagination", {
+        attrs: { length: _vm.pagination.total },
+        on: { input: _vm.fetchUsers },
+        model: {
+          value: _vm.pagination.current,
+          callback: function($$v) {
+            _vm.$set(_vm.pagination, "current", $$v)
+          },
+          expression: "pagination.current"
+        }
+      }),
+      _vm._v(" "),
+      _c("v-simple-table", {
+        scopedSlots: _vm._u([
+          {
+            key: "default",
+            fn: function() {
+              return [
+                _c("thead", [
+                  _c("tr", [
+                    _c("th", { staticClass: "text-left" }, [_vm._v("Name")]),
+                    _vm._v(" "),
+                    _c("th", { staticClass: "text-left" }, [_vm._v("Email")]),
+                    _vm._v(" "),
+                    _c("th", { staticClass: "text-left" }, [_vm._v("Action")])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c(
+                  "tbody",
+                  _vm._l(_vm.users, function(user) {
+                    return _c("tr", { key: user.id }, [
+                      _c("td", [_vm._v(_vm._s(user.name))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(user.email))]),
+                      _vm._v(" "),
+                      _c(
+                        "td",
+                        [
+                          _c(
+                            "v-btn",
+                            {
+                              on: {
+                                click: function($event) {
+                                  return _vm.editUser(user)
+                                }
+                              }
+                            },
+                            [_vm._v("Edit")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-btn",
+                            {
+                              on: {
+                                click: function($event) {
+                                  return _vm.deleteUser(user.id)
+                                }
+                              }
+                            },
+                            [_vm._v("Delete")]
+                          )
+                        ],
+                        1
+                      )
+                    ])
+                  }),
+                  0
+                )
+              ]
+            },
+            proxy: true
+          }
+        ])
+      })
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
