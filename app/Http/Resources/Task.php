@@ -18,7 +18,9 @@ class Task extends Resource
         return[
             'id'=>$this->id,
             'title'=>$this->title,
-            'description'=>$this->description
+            'description'=>$this->description,
+            'user_id'=>$this->user_id,
+            'task_done'=>$this->task_done
         ];
     }
 

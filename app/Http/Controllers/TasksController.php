@@ -46,6 +46,7 @@ class TasksController extends Controller
         $task->title=$request->input('title');
         $task->description=$request->input('description');
         $task->user_id=$request->input('user_id');
+        $task->task_done=$request->input('task_done');
 
         if($task->save())
         {return new TaskResource($task);}

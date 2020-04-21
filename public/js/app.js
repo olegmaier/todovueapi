@@ -87292,7 +87292,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuet
   theme: {
     themes: {
       light: {
-        primary: '#ee44aa',
+        primary: 'blue',
         secondary: '#424242',
         accent: '#82B1FF',
         error: '#FF5252',
@@ -90707,7 +90707,7 @@ exports = module.exports = __webpack_require__(50)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n.done[data-v-487325f2] {\r\n  text-decoration: line-through;\n}\r\n", ""]);
 
 // exports
 
@@ -90718,6 +90718,38 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -90751,18 +90783,29 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'tasks',
     data: function data() {
-        return {
+        return _defineProperty({
             tasks: [],
+            taskform: {
+                title: '',
+                description: '',
+                id: '',
+                user_id: 1,
+                task_done: false
+            },
             task: {
                 id: '',
                 title: '',
                 description: '',
-                user_id: 1
+                user_id: 1,
+                done: false
             },
             task_id: '',
             pagination: {},
             edit: false
-        };
+        }, 'pagination', {
+            current: 1,
+            total: 0
+        });
     },
     created: function created() {
         this.fetchTasks();
@@ -90774,23 +90817,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             var vm = this;
             page_url = page_url || '/api/tasks';
-            fetch(page_url).then(function (res) {
+            fetch('/api/tasks?page=' + this.pagination.current).then(function (res) {
                 return res.json();
             }).then(function (res) {
                 _this.tasks = res.data;
-                vm.makePagination(res.meta, res.links);
+                _this.pagination.current = res.meta.current_page;
+                _this.pagination.total = res.meta.last_page;
             }).catch(function (err) {
                 return console.log(err);
             });
-        },
-        makePagination: function makePagination(meta, links) {
-            var pagination = {
-                current_page: meta.current_page,
-                last_page: meta.last_page,
-                next_page_url: links.next,
-                prev_page_url: links.prev
-            };
-            this.pagination = pagination;
         },
         deleteTask: function deleteTask(id) {
             var _this2 = this;
@@ -90806,9 +90841,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
         },
         editTask: function editTask(task) {
-            this.task.description = task.description;
-            this.task.title = task.title;
-            this.task.id = task.id;
+            this.taskform.description = task.description;
+            this.taskform.title = task.title;
+            this.taskform.id = task.id;
             this.edit = true;
         },
         addOrUpdateTask: function addOrUpdateTask() {
@@ -90821,32 +90856,48 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(this.task)
+                    body: JSON.stringify(this.taskform)
                 }).then(function (res) {
                     _this3.fetchTasks();
-                    _this3.task.description = '';
-                    _this3.task.title = '';
+                    _this3.taskform.description = '';
+                    _this3.taskform.title = '';
                 }).catch(function (err) {
                     console.log(err);
                 });
             } else {
                 //update
-                fetch('/api/tasks/' + this.task.id, {
+                fetch('/api/tasks/' + this.taskform.id, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(this.task)
+                    body: JSON.stringify(this.taskform)
                 }).then(function (res) {
                     _this3.fetchTasks();
-                    _this3.task.description = '';
-                    _this3.task.title = '';
-                    _this3.task.id = '';
+                    _this3.taskform.description = '';
+                    _this3.taskform.title = '';
+                    _this3.taskform.id = '';
                     _this3.edit = false;
                 }).catch(function (err) {
                     console.log(err);
                 });
             }
+        },
+        updateTaskStatus: function updateTaskStatus(task) {
+            var _this4 = this;
+
+            console.log(task);
+            fetch('/api/tasks/' + task.id, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(task)
+            }).then(function (res) {
+                _this4.fetchTasks();
+            }).catch(function (err) {
+                console.log(err);
+            });
         }
     }
 });
@@ -90865,135 +90916,139 @@ var render = function() {
       _c("h2", [_vm._v("Tasks")]),
       _vm._v(" "),
       _c(
-        "form",
-        {
-          attrs: { action: "" },
-          on: {
-            submit: function($event) {
-              $event.preventDefault()
-              return _vm.addOrUpdateTask()
-            }
-          }
-        },
+        "v-form",
         [
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.task.title,
-                expression: "task.title"
-              }
-            ],
-            attrs: { type: "text", placeholder: "Title" },
-            domProps: { value: _vm.task.title },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(_vm.task, "title", $event.target.value)
-              }
+          _c("v-text-field", {
+            attrs: { label: "Task", "hide-details": "auto" },
+            model: {
+              value: _vm.taskform.title,
+              callback: function($$v) {
+                _vm.$set(_vm.taskform, "title", $$v)
+              },
+              expression: "taskform.title"
             }
           }),
           _vm._v(" "),
-          _c("textarea", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.task.description,
-                expression: "task.description"
-              }
-            ],
-            attrs: { placeholder: "Description" },
-            domProps: { value: _vm.task.description },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(_vm.task, "description", $event.target.value)
-              }
+          _c("v-textarea", {
+            attrs: {
+              "auto-grow": "",
+              filled: "",
+              label: "Description",
+              rows: "3"
+            },
+            model: {
+              value: _vm.taskform.description,
+              callback: function($$v) {
+                _vm.$set(_vm.taskform, "description", $$v)
+              },
+              expression: "taskform.description"
             }
           }),
           _vm._v(" "),
-          _c("button", { attrs: { type: "submit" } }, [_vm._v("Save")])
-        ]
+          _c(
+            "v-btn",
+            {
+              staticClass: "mr-4",
+              attrs: { color: "success" },
+              on: { click: _vm.addOrUpdateTask }
+            },
+            [_vm._v("\r\n      Save\r\n      ")]
+          )
+        ],
+        1
       ),
       _vm._v(" "),
-      _c("ul", { staticClass: "pagination" }, [
-        _c("li", { class: [{ disabled: !_vm.pagination.prev_page_url }] }, [
-          _c(
-            "a",
-            {
-              attrs: { href: "#" },
-              on: {
-                click: function($event) {
-                  return _vm.fetchTasks(_vm.pagination.prev_page_url)
-                }
-              }
-            },
-            [_vm._v("Previous")]
-          )
-        ]),
-        _vm._v(" "),
-        _c("li", [
-          _vm._v(
-            "\r\n            Page " +
-              _vm._s(_vm.pagination.current_page) +
-              " of " +
-              _vm._s(_vm.pagination.last_page) +
-              "\r\n        "
-          )
-        ]),
-        _vm._v(" "),
-        _c("li", { class: [{ disabled: !_vm.pagination.next_page_url }] }, [
-          _c(
-            "a",
-            {
-              attrs: { href: "#" },
-              on: {
-                click: function($event) {
-                  return _vm.fetchTasks(_vm.pagination.next_page_url)
-                }
-              }
-            },
-            [_vm._v("Next")]
-          )
-        ])
-      ]),
+      _c("v-divider", { staticClass: "mb-4 mt-4" }),
+      _vm._v(" "),
+      _c("v-pagination", {
+        attrs: { length: _vm.pagination.total },
+        on: { input: _vm.fetchTasks },
+        model: {
+          value: _vm.pagination.current,
+          callback: function($$v) {
+            _vm.$set(_vm.pagination, "current", $$v)
+          },
+          expression: "pagination.current"
+        }
+      }),
       _vm._v(" "),
       _vm._l(_vm.tasks, function(task) {
-        return _c("div", { key: task.id }, [
-          _c("h3", [_vm._v(_vm._s(task.title))]),
-          _vm._v(" "),
-          _c("p", [_vm._v(_vm._s(task.description))]),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
+        return _c(
+          "v-card",
+          {
+            key: task.id,
+            staticClass: "mx-auto",
+            attrs: { "max-width": "500" }
+          },
+          [
+            _c("v-checkbox", {
+              staticClass: "ml-4 mt-4",
+              class: (task.task_done && "done") || "",
+              attrs: { color: (task.task_done && "grey") || "primary" },
               on: {
-                click: function($event) {
-                  return _vm.editTask(task)
+                change: function($event) {
+                  return _vm.updateTaskStatus(task)
                 }
+              },
+              scopedSlots: _vm._u(
+                [
+                  {
+                    key: "label",
+                    fn: function() {
+                      return [
+                        _c("div", {
+                          staticClass: "ml-4",
+                          class:
+                            (task.task_done && "grey--text") || "primary--text",
+                          domProps: { textContent: _vm._s(task.title) }
+                        })
+                      ]
+                    },
+                    proxy: true
+                  }
+                ],
+                null,
+                true
+              ),
+              model: {
+                value: task.task_done,
+                callback: function($$v) {
+                  _vm.$set(task, "task_done", $$v)
+                },
+                expression: "task.task_done"
               }
-            },
-            [_vm._v("Edit")]
-          ),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              on: {
-                click: function($event) {
-                  return _vm.deleteTask(task.id)
+            }),
+            _vm._v(" "),
+            _c("v-card-text", { class: (task.task_done && "done") || "" }, [
+              _vm._v("\r\n        " + _vm._s(task.description) + "\r\n    ")
+            ]),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                on: {
+                  click: function($event) {
+                    return _vm.editTask(task)
+                  }
                 }
-              }
-            },
-            [_vm._v("Delete")]
-          )
-        ])
+              },
+              [_vm._v("Edit")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                on: {
+                  click: function($event) {
+                    return _vm.deleteTask(task.id)
+                  }
+                }
+              },
+              [_vm._v("Delete")]
+            )
+          ],
+          1
+        )
       })
     ],
     2
